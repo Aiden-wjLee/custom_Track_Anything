@@ -2,7 +2,7 @@ WJ version
 referenced by [Track_Anything](https://github.com/gaomingqi/Track-Anything)
 
 Make Folder
-'''bash
+```bash
 ├── data
 │   ├── train
 │   ├── test
@@ -13,4 +13,4 @@ Make Folder
 │   ├── model.py
 │   └── dataset.py
 └── run.sh
-'''
+``` 
