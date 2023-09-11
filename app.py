@@ -1,5 +1,5 @@
 #python app.py --device cuda:0 --mask_save Mask_SAVE
-import gradio as gr
+import gradio as gr#
 import argparse
 import gdown
 import cv2
@@ -10,6 +10,7 @@ sys.path.append(sys.path[0]+"/tracker")
 sys.path.append(sys.path[0]+"/tracker/model")
 from track_anything import TrackingAnything
 from track_anything import parse_augment
+from custom_save import custom_save
 import requests
 import json
 import torchvision
@@ -18,8 +19,7 @@ from tools.painter import mask_painter
 import psutil
 import time
 
-from result_mask_main import result_mask
-from image_to_video import images_to_video
+
 
 try: 
     from mmcv.cnn import ConvModule
@@ -305,25 +305,29 @@ def vos_tracking_video(video_state, interactive_state, mask_dropdown):
     
     #### shanggao code for mask save
     if interactive_state["mask_save"]:
-        if not os.path.exists('./result/mask_npy/{}'.format(video_state["video_name"].split('.')[0])):
-            os.makedirs('./result/mask_npy/{}'.format(video_state["video_name"].split('.')[0]))
-        i = 0
-        print("save mask")
-        for mask in video_state["masks"]:
-            np.save(os.path.join('./result/mask_npy/{}'.format(video_state["video_name"].split('.')[0]), '{:05d}.npy'.format(i)), mask)
-            i+=1
+        custom_save(video_state)
+        '''        
+        def custom_save(video_state):
+            if not os.path.exists('./result/mask_npy/{}'.format(video_state["video_name"].split('.')[0])):
+                os.makedirs('./result/mask_npy/{}'.format(video_state["video_name"].split('.')[0]))
+            i = 0
+            print("save mask")
+            for mask in video_state["masks"]:
+                np.save(os.path.join('./result/mask_npy/{}'.format(video_state["video_name"].split('.')[0]), '{:05d}.npy'.format(i)), mask)
+                i+=1
+                
+            ##custom
+            video_folder_name=video_state["video_name"].split('.')[0]+'/'#f'floor_new_val{i}/'
+            npy_folder='./result/mask_npy/'+video_folder_name
+            save_folder = './result/mask/'+video_folder_name
+            result_mask(npy_folder, save_folder)
             
-        ##custom
-        video_folder_name=video_state["video_name"].split('.')[0]+'/'#f'floor_new_val{i}/'
-        npy_folder='./result/mask_npy/'+video_folder_name
-        save_folder = './result/mask/'+video_folder_name
-        result_mask(npy_folder, save_folder)
-        
-        image_folder=f'D:/OneDrive - Sogang/Sogang/23/papers/Track-Anything-master/result/mask/'
-        video_name1=video_state["video_name"].split('.')[0]
-        video_name= image_folder+f'{video_name1}.avi'
-        fps = 30
-        images_to_video(image_folder+video_name1+'/', video_name, fps)
+            image_folder=f'D:/OneDrive - Sogang/Sogang/23/papers/Track-Anything-master/result/mask/'
+            video_name1=video_state["video_name"].split('.')[0]
+            video_name= image_folder+f'{video_name1}.avi'
+            fps = 30
+            images_to_video(image_folder+video_name1+'/', video_name, fps)'''
+            
         ##custom
         
         
