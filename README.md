@@ -8,5 +8,4 @@ Make result Folder
 │   ├── img
 │   ├── mask
 │   └── mask_npy
-└── run.sh
 ``` 
